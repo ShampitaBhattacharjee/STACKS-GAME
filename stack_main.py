@@ -36,6 +36,7 @@ def welcomeScreen():
                 pygame.display.update()
                 CLOCK.tick(fps)
     pygame.quit()
+    quit()
 
 def keys_to_use():
     exit=False
@@ -151,7 +152,7 @@ def gameloop():
                 if event.key==pygame.K_SPACE:
                     a=drop_now(a,b,STACK)
                     if(a==0):
-                        game_over(hiscore)
+                        game_over(hiscore, score)
                     else:
                         STACK[a][b]=value
                         BLIT_LIST.append([value,POSITIONS[a][b]])
@@ -185,7 +186,7 @@ def gameloop():
             else:
                 c=drop(a,b,STACK)
                 if(c==0):
-                    game_over(hiscore)
+                    game_over(hiscore, score)
                 elif(a==c):
                     STACK[a][b]=value
                     BLIT_LIST.append([value,POSITIONS[a][b]])
@@ -217,7 +218,7 @@ def drop_now(a,b,STACK):
         a=a+1
     return a
 
-def game_over(hiscore):
+def game_over(hiscore, score):
     exit=False
     pygame.mixer.Channel(0).play(pygame.mixer.Sound('Music/Gameover.wav'))
     pygame.mixer.music.load('Music/Gameover.wav')
@@ -235,11 +236,8 @@ def game_over(hiscore):
                     pygame.mixer.music.play()
                     welcomeScreen()
             else:
-                with open('Hiscore.txt', 'r') as f:
-                    hiscore=f.read()
-                    hiscore=int(hiscore)
                 SCREEN.blit(GAME_BLOCKS['gameover'], (0,0))
-                SCREEN.blit(GAME_BLOCKS['score'][hiscore], (195, 389))
+                SCREEN.blit(GAME_BLOCKS['score'][score], (195, 389))
                 pygame.display.update()
                 CLOCK.tick(fps)
     pygame.quit()
